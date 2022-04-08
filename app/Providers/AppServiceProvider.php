@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
 
 namespace App\Providers;
 
@@ -19,11 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerPaymentProvideFactory();
+        $this->registerPaymentProviderFactory();
         $this->registerMoneyFormatter();
     }
 
-    public function registerPaymentProvideFactory()
+    public function registerPaymentProviderFactory()
     {
         $this->app->singleton(PaymentProviderFactory::class, function ($app) {
             return new PaymentProviderFactory($app);
