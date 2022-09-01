@@ -4,7 +4,6 @@
 
 @section('content')
     <h2>{{ $ticket->title }}</h2>
-    </form>
     <form method="post" action="{{ route('checkout', ['ticket' => $ticket]) }}">
         @csrf
         <div class="form-group my-4">

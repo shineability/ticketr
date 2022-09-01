@@ -37,12 +37,7 @@ final class PaymentProvider implements PaymentProviderContract
     {
         $session = $this->createSession($order);
 
-        $checkoutUrl = route('stripe.checkout.redirect', [
-            'organizer' => $order->organizer,
-            'session_id' => $session->id
-        ]);
-
-        return PaymentResponse::make(new StripePayment($session), $checkoutUrl);
+        return PaymentResponse::make(new StripePayment($session), $session->url);
     }
 
     private function createSession(Order $order): StripeCheckoutSession
@@ -64,7 +59,7 @@ final class PaymentProvider implements PaymentProviderContract
             ],
             'mode' => 'payment',
             'success_url' => route('checkout.redirect.order', ['order' => $order]),
-            'cancel_url' => route('stripe.checkout.cancel', ['order' => $order])
+            'cancel_url' => route('home')
         ]);
     }
 }
