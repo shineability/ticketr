@@ -56,7 +56,7 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
-    'ngrok_url' => env('NGROK_URL', null),
+    'share_url' => env('SHARE_URL', null),
 
     /*
     |--------------------------------------------------------------------------

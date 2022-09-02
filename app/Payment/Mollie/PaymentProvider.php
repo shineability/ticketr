@@ -9,6 +9,7 @@ use Mollie\Api\MollieApiClient;
 use App\Payment\Mollie\Payment as MolliePayment;
 use Mollie\Api\Resources\Payment as MollieApiResourcePayment;
 use App\Payment\PaymentResponse;
+use Webmozart\Assert\Assert;
 
 final class PaymentProvider implements PaymentProviderContract
 {
@@ -17,9 +18,10 @@ final class PaymentProvider implements PaymentProviderContract
      */
     private $client;
 
-    public function __construct(MollieApiClient $client)
+    public function __construct(MollieApiClient $client, string $webhookUrl)
     {
         $this->client = $client;
+        $this->webhookUrl = $webhookUrl;
     }
 
     public function name(): string
@@ -49,21 +51,10 @@ final class PaymentProvider implements PaymentProviderContract
             ],
             'description' => $order->payment_description,
             'redirectUrl' => route('checkout.redirect.order', ['order' => $order->uuid]),
-            'webhookUrl'  => $this->getWebhookUrl(),
+            'webhookUrl'  => $this->webhookUrl,
             'metadata' => [
                 'order_id' => $order->uuid,
             ],
         ]);
-    }
-
-    private function getWebhookUrl(): string
-    {
-        $url = route('mollie.webhook');
-
-        if (app()->isLocal()) {
-            return str_replace(config('app.url'), config('app.ngrok_url'), $url);
-        }
-
-        return $url;
     }
 }
