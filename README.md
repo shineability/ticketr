@@ -2,15 +2,19 @@
 
 The instructions for the assessment can be found [**here**](ASSESSMENT.md).
 
+## Requirements
+
+- PHP 8.1 or later
+- Docker
+
 ## Installation
 
 1. Clone this repository with `git clone git@github.com:shineability/ticketr.git`
 2. Run `composer install` to install the dependencies
-3. Run `./vendor/bin/homestead make` and `vagrant up` 
-4. Drink ☕
-5. Run `vagrant ssh` and cd into `/home/vagrant/code`
-6. Run `composer setup` to run the migrations
-7. Setup a working email driver like __[Mailtrap](https://mailtrap.io/)__
+3. Run `./vendor/bin/sail up` 
+4. Wait for it ☕
+5. Run `./vendor/bin/sail composer setup` to run the migrations
+6. Setup a working email driver like __[Mailtrap](https://mailtrap.io/)__
 
 ## Todo
 
