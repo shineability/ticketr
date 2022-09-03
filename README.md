@@ -14,7 +14,7 @@ The instructions for the assessment can be found [**here**](ASSESSMENT.md).
 3. Run `./vendor/bin/sail up` 
 4. Wait for it ☕
 5. Run `./vendor/bin/sail composer setup` to run the migrations
-6. Setup a working email driver like __[Mailtrap](https://mailtrap.io/)__
+6. Visit `http://localhost` to run the app and view sent emails using Mailhog at `http://localhost:8025`
 
 ## Todo
 
@@ -24,14 +24,14 @@ The instructions for the assessment can be found [**here**](ASSESSMENT.md).
 
 ## Webhooks
 
-To be able to receive webhook requests when running the project locally, Ngrok will be used to expose the local URL. Run `share ticketr.test` in the Vagrant box. After running the command, you will see an Ngrok screen appear containing the activity log and the publicly accessible URL, which needs to be copied to your `.env` file, e.g.: 
+To be able to receive webhook requests when running the project locally, [**Expose**](https://expose.dev/docs/introduction) will be used to share the local URL. Run `./vendor/bin/sail share` and copy the public URL ([**use the HTTP one**](https://github.com/laravel/sail/issues/216)) to your `.env` file, e.g.: 
 
 ```
-NGROK_URL=https://7f1ff31072b3.ngrok.io
+SHARE_URL=http://foobar.laravel-sail.site:8080
 ```
 This will make webhooks available for the **Mollie implementation**, since the webhook URL can be sent along as a parameter when [**creating a payment using the Mollie API**](https://docs.mollie.com/reference/v2/payments-api/create-payment).  
 
-For the **Stripe implementation** the webhook URL needs to be configured in the Stripe backend, so [**send me**](https://github.com/shineability) the Ngrok URL if you want to see it in action ;)
+For the **Stripe implementation** the webhook URL needs to be configured in the Stripe backend, so [**send me**](https://github.com/shineability) the share URL if you want to see it in action ;)
 
 ## Payment providers
 
@@ -40,7 +40,7 @@ Currently three payment providers are available for Ticketr: **Mollie**, **Strip
 
 ### Implementation
 
-This application implements the [**Strategy pattern**](https://refactoring.guru/design-patterns/strategy) to be able to switch between different payment provider implementations at runtime.
+This application implements the [**Bridge pattern**](https://refactoring.guru/design-patterns/bridge) to be able to switch between different payment provider implementations at runtime.
 
 Each payment provider should implement the `App\Payment\Contracts\PaymentProvider` interface:
 
