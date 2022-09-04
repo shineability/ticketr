@@ -6,13 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Organizer extends Model
 {
-    protected $fillable = [
-        'name', 'payment_provider', 'payment_provider_config'
-    ];
-
-    protected $casts = [
-        'payment_provider_config' => 'array'
-    ];
+    protected $fillable = ['name', 'payment_provider'];
 
     public function tickets()
     {

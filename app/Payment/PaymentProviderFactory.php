@@ -5,7 +5,6 @@ namespace App\Payment;
 use App\Organizer;
 use App\Order;
 use App\Payment\Contracts\PaymentProvider;
-use Illuminate\Config\Repository as Config;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
 use Closure;
@@ -28,16 +27,15 @@ final class PaymentProviderFactory
     }
 
     /**
-     * Create payment provider based on type and configuration settings.
+     * Create payment provider based on type.
      *
      * @param  string $provider
-     * @param  Config $config
      * @return \App\Payment\Contracts\PaymentProvider
      */
-    public function create(string $provider, Config $config): PaymentProvider
+    public function create(string $provider): PaymentProvider
     {
         if (isset($this->providers[$provider])) {
-            return $this->providers[$provider]($config, $this->container);
+            return $this->providers[$provider]($this->container);
         }
 
         throw new InvalidArgumentException("Payment provider [$provider] not supported");
@@ -49,10 +47,7 @@ final class PaymentProviderFactory
      */
     public function createForOrganizer(Organizer $organizer): PaymentProvider
     {
-        $provider = $organizer->payment_provider;
-        $config = new Config($organizer->payment_provider_config);
-
-        return $this->create($provider, $config);
+        return $this->create($organizer->payment_provider);
     }
 
     /**

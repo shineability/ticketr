@@ -14,10 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $ancienneBelgique = Organizer::create([
             'name' => 'Ancienne Belgique',
-            'payment_provider' => 'mollie',
-            'payment_provider_config' => [
-                'api_key' => 'test_yKt4rRQBAhSEuWzbefQyETb6U9MxCM'
-            ]
+            'payment_provider' => 'mollie'
         ]);
 
         $ancienneBelgique->tickets()->createMany([
@@ -40,11 +37,7 @@ class DatabaseSeeder extends Seeder
 
         $trix = Organizer::create([
             'name' => 'Trix',
-            'payment_provider' => 'stripe',
-            'payment_provider_config' => [
-                'publishable_key' => 'pk_test_51HOSMCCHJnPT4OHKifJXethB63Ou1C4SnU9E1zo7A4OjXr4JM8aLyLKYdmXrvhHbPqlbXqdmyC8eNvqebUchxL3S00g77DijVt',
-                'secret_key' => 'sk_test_51HOSMCCHJnPT4OHKLooxPBc23r7hfWaoa2XvCwSvS8WsuT2Ocj8bJRvpX2mP5pczw3yhDLksRUMTiraLJQ6WEKYz00odNQlMYN'
-            ]
+            'payment_provider' => 'stripe'
         ]);
 
         $trix->tickets()->createMany([
@@ -68,8 +61,7 @@ class DatabaseSeeder extends Seeder
 
         $kavka = Organizer::create([
             'name' => 'Kavka',
-            'payment_provider' => 'free',
-            'payment_provider_config' => []
+            'payment_provider' => 'free'
         ]);
 
         $kavka->tickets()->createMany([

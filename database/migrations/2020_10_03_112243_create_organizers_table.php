@@ -17,7 +17,6 @@ class CreateOrganizersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('payment_provider');
-            $table->json('payment_provider_config')->nullable();
             $table->timestamps();
         });
     }

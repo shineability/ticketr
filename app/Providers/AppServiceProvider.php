@@ -49,18 +49,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        PaymentProvider::extend('mollie', function ($config) {
+        PaymentProvider::extend('mollie', function () {
             $client = new \Mollie\Api\MollieApiClient();
-            $client->setApiKey($config['api_key']);
+            $client->setApiKey(config('payment.mollie.api_key'));
             return new \App\Payment\Mollie\PaymentProvider($client, $this->generateSharedWebhookUrlForMollie());
         });
 
-        PaymentProvider::extend('stripe', function ($config) {
-            $client = new \Stripe\StripeClient($config['secret_key']);
+        PaymentProvider::extend('stripe', function () {
+            $client = new \Stripe\StripeClient(config('payment.stripe.secret_key'));
             return new \App\Payment\Stripe\PaymentProvider($client);
         });
 
-        PaymentProvider::extend('free', function ($config) {
+        PaymentProvider::extend('free', function () {
             return new \App\Payment\Free\PaymentProvider();
         });
     }

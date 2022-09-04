@@ -9,7 +9,6 @@ use Stripe\StripeClient;
 use App\Payment\Stripe\Payment as StripePayment;
 use Stripe\Checkout\Session as StripeCheckoutSession;
 use App\Payment\PaymentResponse;
-use Illuminate\Http\Request;
 
 final class PaymentProvider implements PaymentProviderContract
 {
