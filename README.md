@@ -40,7 +40,7 @@ Currently three payment providers are available for Ticketr: **Mollie**, **Strip
 
 ### Implementation
 
-This application implements the [**Bridge pattern**](https://refactoring.guru/design-patterns/bridge) to be able to switch between different payment provider implementations at runtime.
+This application implements the [**Strategy pattern**](https://refactoring.guru/design-patterns/strategy) to be able to switch between different payment provider implementations at runtime.
 
 Each payment provider should implement the `App\Payment\Contracts\PaymentProvider` interface:
 
