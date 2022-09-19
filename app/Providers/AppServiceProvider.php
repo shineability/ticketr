@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Faker\TicketrProvider;
+use Faker\{Factory, Generator};
 use Illuminate\{Support\ServiceProvider, Foundation\AliasLoader};
 use App\Payment\PaymentProviderFactory;
 use App\Payment\PaymentProviderFacade as PaymentProvider;
@@ -11,18 +13,14 @@ use NumberFormatter;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->registerPaymentProviderFactory();
         $this->registerMoneyFormatter();
+        $this->registerTicketrProviderForFaker();
     }
 
-    public function registerPaymentProviderFactory()
+    public function registerPaymentProviderFactory(): void
     {
         $this->app->singleton(PaymentProviderFactory::class, function ($app) {
             return new PaymentProviderFactory($app);
@@ -33,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         AliasLoader::getInstance()->alias('PaymentProvider', \App\Payment\PaymentProviderFacade::class);
     }
 
-    public function registerMoneyFormatter()
+    public function registerMoneyFormatter(): void
     {
         $this->app->singleton('money.formatter', function () {
             $currencies = new ISOCurrencies();
@@ -47,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         PaymentProvider::extend('mollie', function () {
             $client = new \Mollie\Api\MollieApiClient();
@@ -74,5 +72,14 @@ class AppServiceProvider extends ServiceProvider
         }
 
         return $url;
+    }
+
+    private function registerTicketrProviderForFaker(): void
+    {
+        $this->app->singleton(Generator::class, function () {
+            $faker = Factory::create();
+            $faker->addProvider(new TicketrProvider($faker));
+            return $faker;
+        });
     }
 }

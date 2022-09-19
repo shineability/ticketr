@@ -23,8 +23,6 @@ Route::prefix('checkout')->group(function () {
 });
 
 Route::prefix('stripe')->group(function () {
-    Route::get('checkout/redirect/{organizer}', [\App\Payment\Stripe\Controllers\CheckoutController::class, 'redirect'])->name('stripe.checkout.redirect');
-    Route::get('checkout/cancel/{order:uuid}', [\App\Payment\Stripe\Controllers\CheckoutController::class, 'cancel'])->name('stripe.checkout.cancel');
     Route::any('webhook', [\App\Payment\Stripe\Controllers\WebhookController::class, '__invoke'])->name('stripe.webhook');
 });
 

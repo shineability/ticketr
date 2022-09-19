@@ -16,11 +16,9 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->foreignId('organizer_id');
             $table->foreignId('ticket_id');
             $table->string('email');
             $table->enum('status', ['pending', 'canceled', 'completed'])->default('pending');
-            $table->string('payment_provider');
             $table->string('payment_transaction_id')->nullable();
             $table->string('payment_status')->nullable();
             $table->timestamps();

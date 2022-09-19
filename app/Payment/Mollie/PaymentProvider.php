@@ -2,21 +2,18 @@
 
 namespace App\Payment\Mollie;
 
-use App\Order;
+use App\Models\Order;
 use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Contracts\Payment as PaymentContract;
 use Mollie\Api\MollieApiClient;
 use App\Payment\Mollie\Payment as MolliePayment;
 use Mollie\Api\Resources\Payment as MollieApiResourcePayment;
 use App\Payment\PaymentResponse;
-use Webmozart\Assert\Assert;
 
 final class PaymentProvider implements PaymentProviderContract
 {
-    /**
-     * @var \Mollie\Api\MollieApiClient
-     */
-    private $client;
+    private MollieApiClient $client;
+    private string $webhookUrl;
 
     public function __construct(MollieApiClient $client, string $webhookUrl)
     {
@@ -50,7 +47,7 @@ final class PaymentProvider implements PaymentProviderContract
                 'value' => number_format($order->total->getAmount() / 100, 2, '.', '')
             ],
             'description' => $order->payment_description,
-            'redirectUrl' => route('checkout.redirect.order', ['order' => $order->uuid]),
+            'redirectUrl' => route('checkout.redirect.order', ['order' => $order]),
             'webhookUrl'  => $this->webhookUrl,
             'metadata' => [
                 'order_id' => $order->uuid,

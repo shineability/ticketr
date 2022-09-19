@@ -2,8 +2,8 @@
 
 namespace App\Payment;
 
-use App\Organizer;
-use App\Order;
+use App\Models\Organizer;
+use App\Models\Order;
 use App\Payment\Contracts\PaymentProvider;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
@@ -11,15 +11,8 @@ use Closure;
 
 final class PaymentProviderFactory
 {
-    /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    private $container;
-
-    /**
-     * @var array
-     */
-    private $providers = [];
+    private Container $container;
+    private array $providers = [];
 
     public function __construct(Container $container)
     {
@@ -30,7 +23,8 @@ final class PaymentProviderFactory
      * Create payment provider based on type.
      *
      * @param  string $provider
-     * @return \App\Payment\Contracts\PaymentProvider
+     * @return PaymentProvider
+     * @throws InvalidArgumentException
      */
     public function create(string $provider): PaymentProvider
     {
@@ -43,7 +37,7 @@ final class PaymentProviderFactory
 
     /**
      * @param  Organizer $organizer
-     * @return \App\Payment\Contracts\PaymentProvider
+     * @return PaymentProvider
      */
     public function createForOrganizer(Organizer $organizer): PaymentProvider
     {
@@ -52,7 +46,7 @@ final class PaymentProviderFactory
 
     /**
      * @param  Order $order
-     * @return \App\Payment\Contracts\PaymentProvider
+     * @return PaymentProvider
      */
     public function createForOrder(Order $order): PaymentProvider
     {
@@ -63,10 +57,10 @@ final class PaymentProviderFactory
      * Register a custom payment provider.
      *
      * @param  string  $provider
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @return $this
      */
-    public function extend($provider, Closure $callback)
+    public function extend($provider, Closure $callback): self
     {
         $this->providers[$provider] = $callback;
 

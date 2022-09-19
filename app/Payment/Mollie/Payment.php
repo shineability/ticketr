@@ -7,10 +7,7 @@ use Mollie\Api\Resources\Payment as MolliePayment;
 
 final class Payment implements PaymentContract
 {
-    /**
-     * @param MolliePayment $payment
-     */
-    private $payment;
+    private MolliePayment $payment;
 
     public function __construct(MolliePayment $payment)
     {
@@ -19,25 +16,25 @@ final class Payment implements PaymentContract
 
     public function isCompleted(): bool
     {
-        return in_array($this->getStatus(), ['paid', 'authorized']);
+        return in_array($this->status(), ['paid', 'authorized']);
     }
 
     public function isCanceled(): bool
     {
-        return $this->getStatus() === 'canceled';
+        return $this->status() === 'canceled';
     }
 
-    public function getStatus(): string
+    public function status(): string
     {
         return $this->payment->status;
     }
 
-    public function getOrderId(): string
+    public function orderId(): string
     {
         return $this->payment->metadata->order_id;
     }
 
-    public function getTransactionId(): string
+    public function transactionId(): string
     {
         return $this->payment->id;
     }

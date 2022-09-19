@@ -2,7 +2,7 @@
 
 namespace App\Payment\Stripe;
 
-use App\Order;
+use App\Models\Order;
 use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Contracts\Payment as PaymentContract;
 use Stripe\StripeClient;
@@ -12,10 +12,7 @@ use App\Payment\PaymentResponse;
 
 final class PaymentProvider implements PaymentProviderContract
 {
-    /**
-     * @var \Stripe\StripeClient
-     */
-    private $client;
+    private StripeClient $client;
 
     public function __construct(StripeClient $client)
     {

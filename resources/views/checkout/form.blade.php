@@ -4,11 +4,12 @@
 
 @section('content')
     <h2>{{ $ticket->title }}</h2>
+    <h5 class="text-muted">{{ $ticket->organizer->name }}</h5>
     <form method="post" action="{{ route('checkout', ['ticket' => $ticket]) }}">
         @csrf
         <div class="form-group my-4">
             <label for="email" class="is-invalid">Email</label>
-            <input name="email" value="{{ old('email') }}" type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" id="email" required>
+            <input name="email" value="{{ old('email') }}" type="input" class="form-control form-control-lg @error('email') is-invalid @enderror" id="email" xrequired>
             @error('email')
                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
             @else

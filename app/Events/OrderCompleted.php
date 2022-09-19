@@ -2,16 +2,13 @@
 
 namespace App\Events;
 
-use App\Order;
+use App\Models\Order;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class OrderCompleted
 {
-    /**
-     * @var \App\Order
-     */
-    public $order;
+    public Order $order;
 
     use Dispatchable, SerializesModels;
 

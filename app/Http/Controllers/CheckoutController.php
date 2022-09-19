@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Ticket;
-use App\Order;
+use App\Models\Ticket;
+use App\Models\Order;
 use App\Payment\PaymentProviderFactory;
 use App\Http\Requests\CheckoutRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
-    /**
-     * @var PaymentProviderFactory
-     */
-    private $providerFactory;
+    private PaymentProviderFactory $providerFactory;
 
     public function __construct(PaymentProviderFactory $providerFactory)
     {
@@ -22,20 +21,20 @@ class CheckoutController extends Controller
     /**
      * Show available tickets.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        return view('checkout.tickets', ['tickets' => Ticket::with('organizer')->get()]);
+        return view('checkout.tickets', ['tickets' => Ticket::all()]);
     }
 
     /**
      * Show ticket form.
      *
      * @param  Ticket $ticket
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function showTicketForm(Ticket $ticket)
+    public function showTicketForm(Ticket $ticket): View
     {
         return view('checkout.form', ['ticket' => $ticket]);
     }
@@ -45,26 +44,28 @@ class CheckoutController extends Controller
      *
      * @param  CheckoutRequest $request
      * @param  Ticket $ticket
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function redirectToPaymentProvider(CheckoutRequest $request, Ticket $ticket)
+    public function redirectToPaymentProvider(CheckoutRequest $request, Ticket $ticket): RedirectResponse
     {
         $order = Order::pending($ticket, $request->email);
         $provider = $this->providerFactory->createForOrganizer($ticket->organizer);
         $response = $provider->checkout($order);
-        $order->processPayment($response->getPayment());
+        $order->processPayment($response->payment());
 
-        return redirect($response->getCheckoutUrl());
+        return redirect($response->checkoutUrl());
     }
 
     /**
      * Redirect to homepage and show order status message.
      *
-     * @param  Order  $order
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Order $order
+     * @return RedirectResponse
      */
-    public function redirectOrder(Order $order)
+    public function redirectOrder(Order $order): RedirectResponse
     {
-        return redirect()->route('home')->with('checkout.order', $order);
+        return redirect()
+            ->route('home')
+            ->with('checkout.order', $order);
     }
 }

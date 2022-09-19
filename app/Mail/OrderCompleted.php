@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Order;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,23 +11,14 @@ class OrderCompleted extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * @var \App\Order
-     */
-    private $order;
+    private Order $order;
 
-    /**
-     * @return void
-     */
     public function __construct(Order $order)
     {
         $this->order = $order;
     }
 
-    /**
-     * @return $this
-     */
-    public function build()
+    public function build(): self
     {
         return $this
             ->subject(sprintf('%s order confirmation #%s', config('app.name'), $this->order->reference))

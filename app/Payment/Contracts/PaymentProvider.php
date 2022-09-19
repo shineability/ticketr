@@ -2,8 +2,7 @@
 
 namespace App\Payment\Contracts;
 
-use App\Order;
-use App\Payment\Contracts\Payment;
+use App\Models\Order;
 use App\Payment\PaymentResponse;
 
 interface PaymentProvider

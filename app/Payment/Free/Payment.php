@@ -2,20 +2,13 @@
 
 namespace App\Payment\Free;
 
-use App\Order;
+use App\Models\Order;
 use App\Payment\Contracts\Payment as PaymentContract;
 
 final class Payment implements PaymentContract
 {
-    /**
-     * @var \App\Order
-     */
-    private $order;
-
-    /**
-     * @var string
-     */
-    private $status;
+    private Order $order;
+    private string $status;
 
     private function __construct(Order $order, string $status)
     {
@@ -25,36 +18,36 @@ final class Payment implements PaymentContract
 
     public static function completed(Order $order)
     {
-        return new static($order, 'completed');
+        return new self($order, 'completed');
     }
 
     public static function canceled(Order $order)
     {
-        return new static($order, 'canceled');
+        return new self($order, 'canceled');
     }
 
     public function isCompleted(): bool
     {
-        return $this->getStatus() === 'completed';
+        return $this->status() === 'completed';
     }
 
     public function isCanceled(): bool
     {
-        return $this->getStatus() === 'canceled';
+        return $this->status() === 'canceled';
     }
 
-    public function getStatus(): string
+    public function status(): string
     {
         return $this->status;
     }
 
-    public function getOrderId(): string
+    public function orderId(): string
     {
         return $this->order->uuid;
     }
 
-    public function getTransactionId(): string
+    public function transactionId(): string
     {
-        return $this->getOrderId();
+        return $this->orderId();
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Ticket;
-use App\Organizer;
 use App\Events\OrderCompleted;
 use Ramsey\Uuid\Uuid;
 use Money\Money;
@@ -13,6 +12,8 @@ use RuntimeException;
 
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'organizer_id', 'ticket_id', 'email', 'payment_provider', 'payment_transaction_id', 'payment_status', 'status'
     ];
@@ -29,11 +30,9 @@ class Order extends Model
     public static function pending(Ticket $ticket, string $email): self
     {
         return static::create([
-            'organizer_id' => $ticket->organizer->id,
             'ticket_id' => $ticket->id,
             'status' => 'pending',
-            'email' => $email,
-            'payment_provider' => $ticket->organizer->payment_provider
+            'email' => $email
         ]);
     }
 
@@ -71,8 +70,8 @@ class Order extends Model
     public function processPayment(Payment $payment): void
     {
         $this->update([
-            'payment_transaction_id' => $payment->getTransactionId(),
-            'payment_status' => $payment->getStatus()
+            'payment_transaction_id' => $payment->transactionId(),
+            'payment_status' => $payment->status()
         ]);
 
         if ($payment->isCompleted()) {
@@ -109,7 +108,7 @@ class Order extends Model
         return $this->ticket->price;
     }
 
-    public function getQrCodeUrlAttribute()
+    public function getQrCodeUrlAttribute(): string
     {
         $data = sprintf('https://www.google.be/search?q=%s', urlencode($this->ticket->title));
         $url = sprintf('https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=%s', urlencode($data));

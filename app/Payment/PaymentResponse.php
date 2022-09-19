@@ -6,15 +6,8 @@ use App\Payment\Contracts\Payment;
 
 final class PaymentResponse
 {
-    /**
-     * @var \App\Payment\Contracts\Payment
-     */
-    private $payment;
-
-    /**
-     * @var string
-     */
-    private $checkoutUrl;
+    private Payment $payment;
+    private string $checkoutUrl;
 
     private function __construct(Payment $payment, string $checkoutUrl)
     {
@@ -22,17 +15,17 @@ final class PaymentResponse
         $this->checkoutUrl = $checkoutUrl;
     }
 
-    public static function make(Payment $payment, string $checkoutUrl)
+    public static function make(Payment $payment, string $checkoutUrl): self
     {
         return new static($payment, $checkoutUrl);
     }
 
-    public function getPayment(): Payment
+    public function payment(): Payment
     {
         return $this->payment;
     }
 
-    public function getCheckoutUrl(): string
+    public function checkoutUrl(): string
     {
         return $this->checkoutUrl;
     }

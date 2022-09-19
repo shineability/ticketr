@@ -7,10 +7,7 @@ use Stripe\Checkout\Session as StripeCheckoutSession;
 
 final class Payment implements PaymentContract
 {
-    /**
-     * @param StripeCheckoutSession $session
-     */
-    private $session;
+    private StripeCheckoutSession $session;
 
     public function __construct(StripeCheckoutSession $session)
     {
@@ -19,7 +16,7 @@ final class Payment implements PaymentContract
 
     public function isCompleted(): bool
     {
-        return $this->getStatus() == 'paid';
+        return $this->status() == 'paid';
     }
 
     public function isCanceled(): bool
@@ -27,17 +24,17 @@ final class Payment implements PaymentContract
         return false;
     }
 
-    public function getStatus(): string
+    public function status(): string
     {
         return $this->session->payment_status;
     }
 
-    public function getOrderId(): string
+    public function orderId(): string
     {
         return $this->session->metadata->order_id;
     }
 
-    public function getTransactionId(): string
+    public function transactionId(): string
     {
         return $this->session->id;
     }
