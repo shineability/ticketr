@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Payment\PaymentProviderFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Session;
 use Tests\Fake\FakePayment;
 use Tests\Fake\FakePaymentProvider;
 use Tests\TestCase;
@@ -113,5 +114,27 @@ class CheckoutTest extends TestCase
         $response
             ->assertRedirect(route('home'))
             ->assertSessionHas('checkout.order', fn($value) => $order->is($value));
+    }
+
+    public function test_it_displays_a_message_when_completed()
+    {
+        $order = Order::factory()->completed()->create();
+        Session::flash('checkout.order', $order);
+
+        $response = $this->get(route('home'));
+
+        $response
+            ->assertSeeText('Thank you for your order!')
+            ->assertSeeText($order->email);
+    }
+
+    public function test_it_displays_a_message_when_canceled()
+    {
+        $order = Order::factory()->canceled()->create();
+        Session::flash('checkout.order', $order);
+
+        $response = $this->get(route('home'));
+
+        $response->assertSeeText('Your order has been canceled...');
     }
 }
