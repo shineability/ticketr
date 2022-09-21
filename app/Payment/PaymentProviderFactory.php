@@ -50,7 +50,7 @@ final class PaymentProviderFactory
      */
     public function createForOrder(Order $order): PaymentProvider
     {
-        return $this->createForOrganizer($order->organizer);
+        return $this->createForOrganizer($order->ticket->organizer);
     }
 
     /**

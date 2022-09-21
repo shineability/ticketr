@@ -2,14 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Models\Order;
 use App\Models\Organizer;
 use App\Models\Ticket;
+use App\Payment\PaymentProviderFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Fake\FakePayment;
+use Tests\Fake\FakePaymentProvider;
 use Tests\TestCase;
 
 class CheckoutTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     public function test_it_shows_all_the_available_tickets()
     {
@@ -72,15 +77,41 @@ class CheckoutTest extends TestCase
 
     public function test_it_redirects_to_the_payment_provider()
     {
-        $this->markTestSkipped('Implement payment provider fake');
+        $ticket = Ticket::factory()
+            ->forOrganizer(['payment_provider' => 'fake'])
+            ->create();
 
-        $this->withoutExceptionHandling();
+        $payment = FakePayment::withStatus('open');
+        $checkoutUrl = $this->faker->url();
+        $email = $this->faker->safeEmail();
 
-        $ticket = Ticket::factory()->forOrganizer(['payment_provider' => 'free'])->create();
+        app(PaymentProviderFactory::class)->extend('fake',
+            function () use ($checkoutUrl, $payment) {
+                return FakePaymentProvider::withPayment($payment, $checkoutUrl);
+            }
+        );
 
-        $response = $this->post(route('checkout.form', $ticket), ['email' => 'valid@email.dev']);
+        $response = $this->post(route('checkout.form', $ticket), ['email' => $email]);
+
+        $response->assertRedirect($checkoutUrl);
+
+        $this->assertDatabaseHas('orders', [
+            'ticket_id' => $ticket->id,
+            'email' => $email,
+            'status' => 'pending',
+            'payment_status' => $payment->status(),
+            'payment_transaction_id' => $payment->transactionId()
+        ]);
+    }
+
+    public function test_it_redirects_to_the_homepage_when_payment_is_processed()
+    {
+        $order = Order::factory()->completed()->create();
+
+        $response = $this->get(route('checkout.redirect.order', $order));
 
         $response
-            ->assertStatus(302);
+            ->assertRedirect(route('home'))
+            ->assertSessionHas('checkout.order', fn($value) => $order->is($value));
     }
 }

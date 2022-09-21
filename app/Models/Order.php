@@ -88,11 +88,6 @@ class Order extends Model
         return static::where('payment_transaction_id', $transactionId)->first();
     }
 
-    public function organizer()
-    {
-        return $this->belongsTo(Organizer::class);
-    }
-
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
@@ -114,10 +109,5 @@ class Order extends Model
         $url = sprintf('https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=%s', urlencode($data));
 
         return $url;
-    }
-
-    public function getPaymentDescriptionAttribute(): string
-    {
-        return sprintf('%s order #%s', config('app.name'), $this->reference);
     }
 }

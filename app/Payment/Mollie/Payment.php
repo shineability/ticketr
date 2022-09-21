@@ -29,11 +29,6 @@ final class Payment implements PaymentContract
         return $this->payment->status;
     }
 
-    public function orderId(): string
-    {
-        return $this->payment->metadata->order_id;
-    }
-
     public function transactionId(): string
     {
         return $this->payment->id;

@@ -21,7 +21,7 @@
     @foreach ($tickets as $ticket)
         <div class="col mb-4">
             <div class="card flex-fill">
-                <img src="{{ $ticket->image }}" class="card-img-top" style="height: 10rem; object-fit: cover; object-position: 50% 0%;" />
+                <img src="{{ $ticket->image }}" class="card-img-top" style="height: 10rem; object-fit: cover; object-position: 50% 0%;"  alt="{{ $ticket->title }}"/>
                 <div class="card-body">
                     <h5 class="card-title">{{ $ticket->title }}</h5>
                     <h6 class="card-subtitle mb-3 text-muted text-black-50">{{ $ticket->organizer->name }}</h6>

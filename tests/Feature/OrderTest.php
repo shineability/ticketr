@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Money\Money;
+use RuntimeException;
+use Tests\Fake\FakePayment;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -23,6 +25,8 @@ class OrderTest extends TestCase
         $email = $this->faker->safeEmail();
 
         $order = Order::pending($ticket, $email);
+
+        $this->assertTrue($order->isPending());
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
@@ -43,12 +47,24 @@ class OrderTest extends TestCase
 
         $order->complete();
 
+        $this->assertTrue($order->isCompleted());
+
         $this->assertDatabaseHas($order, [
             'id' => $order->id,
             'status' => 'completed'
         ]);
 
         Event::assertDispatched(OrderCompleted::class);
+    }
+
+    public function test_it_can_only_be_completed_when_status_is_pending()
+    {
+        $order = Order::factory()->completed()->create();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Only `pending` orders can be completed');
+
+        $order->complete();
     }
 
     public function test_it_sends_a_confirmation_email_when_completed()
@@ -74,6 +90,8 @@ class OrderTest extends TestCase
 
         $order->cancel();
 
+        $this->assertTrue($order->isCanceled());
+
         $this->assertDatabaseHas($order, [
             'id' => $order->id,
             'status' => 'canceled'
@@ -90,7 +108,7 @@ class OrderTest extends TestCase
         $this->assertEquals($transactionId, $order->payment_transaction_id);
     }
 
-    public function test_it_generates_a_reference()
+    public function test_it_has_a_reference()
     {
         $order = Order::factory()->create();
 
@@ -106,6 +124,46 @@ class OrderTest extends TestCase
 
     public function test_it_can_process_a_payment()
     {
-        $this->markTestSkipped('Implement payment provider fake');
+        $order = Order::factory()->pending()->create();
+        $payment = FakePayment::withStatus('foobar');
+
+        $order->processPayment($payment);
+
+        $this->assertDatabaseHas($order, [
+            'id' => $order->id,
+            'status' => 'pending',
+            'payment_transaction_id' => $payment->transactionId(),
+            'payment_status' => $payment->status()
+        ]);
+    }
+
+    public function test_it_can_be_completed_by_processing_a_payment()
+    {
+        $order = Order::factory()->pending()->create();
+        $payment = FakePayment::completed();
+
+        $order->processPayment($payment);
+
+        $this->assertDatabaseHas($order, [
+            'id' => $order->id,
+            'status' => 'completed',
+            'payment_transaction_id' => $payment->transactionId(),
+            'payment_status' => $payment->status()
+        ]);
+    }
+
+    public function test_it_can_be_canceled_by_processing_a_payment()
+    {
+        $order = Order::factory()->pending()->create();
+        $payment = FakePayment::canceled();
+
+        $order->processPayment($payment);
+
+        $this->assertDatabaseHas($order, [
+            'id' => $order->id,
+            'status' => 'canceled',
+            'payment_transaction_id' => $payment->transactionId(),
+            'payment_status' => $payment->status()
+        ]);
     }
 }

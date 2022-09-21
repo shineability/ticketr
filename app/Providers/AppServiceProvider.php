@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Faker\TicketrProvider;
-use Faker\{Factory, Generator};
-use Illuminate\{Support\ServiceProvider, Foundation\AliasLoader};
-use App\Payment\PaymentProviderFactory;
 use App\Payment\PaymentProviderFacade as PaymentProvider;
+use App\Payment\PaymentProviderFactory;
+use Faker\{Factory, Generator};
+use Illuminate\{Foundation\AliasLoader, Support\ServiceProvider};
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use NumberFormatter;
+use Tests\Fake\FakePayment;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,9 +59,13 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Payment\Stripe\PaymentProvider($client);
         });
 
-        PaymentProvider::extend('free', function () {
-            return new \App\Payment\Free\PaymentProvider();
-        });
+//        if (app()->environment('local', 'testing')) {
+//            PaymentProvider::extend('free', function () {
+//                $payment = FakePayment::completed(fake()->uuid());
+//                $checkoutUrl = route()
+//                return new \Tests\Fake\FakePaymentProvider::withPayment();
+//            });
+//        }
     }
 
     private function generateSharedWebhookUrlForMollie(): string

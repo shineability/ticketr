@@ -9,7 +9,7 @@
         @csrf
         <div class="form-group my-4">
             <label for="email" class="is-invalid">Email</label>
-            <input name="email" value="{{ old('email') }}" type="input" class="form-control form-control-lg @error('email') is-invalid @enderror" id="email" xrequired>
+            <input name="email" value="{{ old('email') }}" type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" id="email" required>
             @error('email')
                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
             @else
