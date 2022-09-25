@@ -119,6 +119,7 @@ class CheckoutTest extends TestCase
     public function test_it_displays_a_message_when_completed()
     {
         $order = Order::factory()->completed()->create();
+
         Session::flash('checkout.order', $order);
 
         $response = $this->get(route('home'));
@@ -131,6 +132,7 @@ class CheckoutTest extends TestCase
     public function test_it_displays_a_message_when_canceled()
     {
         $order = Order::factory()->canceled()->create();
+
         Session::flash('checkout.order', $order);
 
         $response = $this->get(route('home'));

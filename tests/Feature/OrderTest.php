@@ -115,7 +115,7 @@ class OrderTest extends TestCase
         $this->assertEquals('00000001', $order->reference);
     }
 
-    public function test_it_calculates_a_total()
+    public function test_it_calculates_the_total()
     {
         $order = Order::factory()->forTicket(['price' => 4900])->create();
 
