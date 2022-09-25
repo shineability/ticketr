@@ -46,7 +46,7 @@ final class PaymentProvider implements PaymentProviderContract
                 'currency' => $order->total->getCurrency(),
                 'value' => number_format($order->total->getAmount() / 100, 2, '.', '')
             ],
-            'description' => $order->payment_description,
+            'description' => sprintf('%s order #%s', config('app.name'), $order->reference),
             'redirectUrl' => route('checkout.redirect.order', ['order' => $order]),
             'webhookUrl'  => $this->webhookUrl,
             'metadata' => [
