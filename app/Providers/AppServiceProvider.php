@@ -10,7 +10,6 @@ use Illuminate\{Foundation\AliasLoader, Support\ServiceProvider};
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use NumberFormatter;
-use Tests\Fake\FakePayment;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,13 +58,11 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Payment\Stripe\PaymentProvider($client);
         });
 
-//        if (app()->environment('local', 'testing')) {
-//            PaymentProvider::extend('free', function () {
-//                $payment = FakePayment::completed(fake()->uuid());
-//                $checkoutUrl = route()
-//                return new \Tests\Fake\FakePaymentProvider::withPayment();
-//            });
-//        }
+        if (app()->environment('local', 'testing')) {
+            PaymentProvider::extend('free', function () {
+                return new \App\Payment\Free\PaymentProvider();
+            });
+        }
     }
 
     private function generateSharedWebhookUrlForMollie(): string
