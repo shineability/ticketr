@@ -23,9 +23,9 @@ Route::prefix('checkout')->group(function () {
 });
 
 Route::prefix('stripe')->group(function () {
-    Route::any('webhook', [\App\Payment\Stripe\Controllers\WebhookController::class, '__invoke'])->name('stripe.webhook');
+    Route::post('webhook', [\App\Payment\Stripe\Controllers\WebhookController::class, '__invoke'])->name('stripe.webhook');
 });
 
 Route::prefix('mollie')->group(function () {
-    Route::any('webhook', [\App\Payment\Mollie\Controllers\WebhookController::class, '__invoke'])->name('mollie.webhook');
+    Route::post('webhook', [\App\Payment\Mollie\Controllers\WebhookController::class, '__invoke'])->name('mollie.webhook');
 });
