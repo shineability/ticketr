@@ -14,13 +14,9 @@ The instructions for the assessment can be found [**here**](ASSESSMENT.md).
 3. Run `./vendor/bin/sail up` 
 4. Wait for it ☕
 5. Run `./vendor/bin/sail composer setup` to run the migrations
-6. Visit `http://localhost` to run the app and view sent emails using Mailhog at `http://localhost:8025`
+6. Visit `http://localhost` to run the app and view sent emails using **Mailhog** at `http://localhost:8025`
 
-## Todo
-
-- Write tests
-- Move payment provider credentials from database to configuration (`.env`)
-
+Run tests with `./vendor/bin/sail test`.
 
 ## Webhooks
 
@@ -31,7 +27,7 @@ SHARE_URL=http://foobar.laravel-sail.site:8080
 ```
 This will make webhooks available for the **Mollie implementation**, since the webhook URL can be sent along as a parameter when [**creating a payment using the Mollie API**](https://docs.mollie.com/reference/v2/payments-api/create-payment).  
 
-For the **Stripe implementation** the webhook URL needs to be configured in the Stripe backend, so [**send me**](https://github.com/shineability) the share URL if you want to see it in action ;)
+For the **Stripe implementation** the webhook URL needs to be configured in the Stripe backend, so [**send me**](https://github.com/shineability) the share URL if you want to see it in action or change the `STRIPE_SECRET_KEY` and set up the webhook in your own Stripe test environment.
 
 ## Payment providers
 
