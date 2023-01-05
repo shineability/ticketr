@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\OrderCompleted;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Ramsey\Uuid\Uuid;
 use Money\Money;
 use App\Payment\Contracts\Payment;
@@ -88,7 +89,7 @@ class Order extends Model
         return static::where('payment_transaction_id', $transactionId)->first();
     }
 
-    public function ticket()
+    public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
     }

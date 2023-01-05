@@ -16,12 +16,12 @@ final class Payment implements PaymentContract
         $this->status = $status;
     }
 
-    public static function completed(Order $order)
+    public static function completed(Order $order): self
     {
         return new self($order, 'completed');
     }
 
-    public static function canceled(Order $order)
+    public static function canceled(Order $order): self
     {
         return new self($order, 'canceled');
     }

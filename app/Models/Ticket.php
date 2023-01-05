@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Ramsey\Uuid\Uuid;
 use Money\Money;
 
@@ -26,7 +27,7 @@ class Ticket extends Model
         });
     }
 
-    public function organizer()
+    public function organizer(): BelongsTo
     {
         return $this->belongsTo('App\Models\Organizer');
     }
