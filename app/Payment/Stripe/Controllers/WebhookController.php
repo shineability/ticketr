@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Payment\PaymentProviderFactory;
 use Illuminate\Http\Request;
-use Illuminate\Log\Logger;
 
 class WebhookController extends Controller
 {

@@ -3,12 +3,12 @@
 namespace App\Payment\Stripe;
 
 use App\Models\Order;
-use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Contracts\Payment as PaymentContract;
-use Stripe\StripeClient;
+use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
+use App\Payment\PaymentResponse;
 use App\Payment\Stripe\Payment as StripePayment;
 use Stripe\Checkout\Session as StripeCheckoutSession;
-use App\Payment\PaymentResponse;
+use Stripe\StripeClient;
 
 final class PaymentProvider implements PaymentProviderContract
 {
@@ -51,11 +51,11 @@ final class PaymentProvider implements PaymentProviderContract
                         'unit_amount' => $order->total->getAmount(),
                     ],
                     'quantity' => 1,
-                ]
+                ],
             ],
             'mode' => 'payment',
             'success_url' => route('checkout.redirect.order', ['order' => $order]),
-            'cancel_url' => route('home')
+            'cancel_url' => route('home'),
         ]);
     }
 }

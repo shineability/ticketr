@@ -21,7 +21,7 @@ class PaymentProviderFactoryTest extends TestCase
 
         $factory = app(PaymentProviderFactory::class);
 
-        $factory->extend('fake', function($app) use ($provider) {
+        $factory->extend('fake', function ($app) use ($provider) {
             return $provider;
         });
 

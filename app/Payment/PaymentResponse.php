@@ -7,6 +7,7 @@ use App\Payment\Contracts\Payment;
 final class PaymentResponse
 {
     private Payment $payment;
+
     private string $checkoutUrl;
 
     private function __construct(Payment $payment, string $checkoutUrl)

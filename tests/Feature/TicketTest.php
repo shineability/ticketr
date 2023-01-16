@@ -14,6 +14,6 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['price' => 4900]);
 
-        $this->assertEquals("€ 49,00", $ticket->formattedPrice);
+        $this->assertEquals('€ 49,00', $ticket->formattedPrice);
     }
 }

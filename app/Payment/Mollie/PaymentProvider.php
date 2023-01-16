@@ -3,16 +3,17 @@
 namespace App\Payment\Mollie;
 
 use App\Models\Order;
-use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Contracts\Payment as PaymentContract;
-use Mollie\Api\MollieApiClient;
+use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Mollie\Payment as MolliePayment;
-use Mollie\Api\Resources\Payment as MollieApiResourcePayment;
 use App\Payment\PaymentResponse;
+use Mollie\Api\MollieApiClient;
+use Mollie\Api\Resources\Payment as MollieApiResourcePayment;
 
 final class PaymentProvider implements PaymentProviderContract
 {
     private MollieApiClient $client;
+
     private string $webhookUrl;
 
     public function __construct(MollieApiClient $client, string $webhookUrl)
@@ -44,11 +45,11 @@ final class PaymentProvider implements PaymentProviderContract
         return $this->client->payments->create([
             'amount' => [
                 'currency' => $order->total->getCurrency(),
-                'value' => number_format($order->total->getAmount() / 100, 2, '.', '')
+                'value' => number_format($order->total->getAmount() / 100, 2, '.', ''),
             ],
             'description' => sprintf('%s order #%s', config('app.name'), $order->reference),
             'redirectUrl' => route('checkout.redirect.order', ['order' => $order]),
-            'webhookUrl'  => $this->webhookUrl,
+            'webhookUrl' => $this->webhookUrl,
             'metadata' => [
                 'order_id' => $order->uuid,
             ],

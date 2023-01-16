@@ -8,6 +8,7 @@ use App\Payment\Contracts\Payment as PaymentContract;
 final class Payment implements PaymentContract
 {
     private Order $order;
+
     private string $status;
 
     private function __construct(Order $order, string $status)

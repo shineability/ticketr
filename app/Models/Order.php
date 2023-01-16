@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Events\OrderCompleted;
+use App\Payment\Contracts\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Events\OrderCompleted;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Ramsey\Uuid\Uuid;
 use Money\Money;
-use App\Payment\Contracts\Payment;
+use Ramsey\Uuid\Uuid;
 use RuntimeException;
 
 class Order extends Model
@@ -16,7 +16,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'organizer_id', 'ticket_id', 'email', 'payment_provider', 'payment_transaction_id', 'payment_status', 'status'
+        'organizer_id', 'ticket_id', 'email', 'payment_provider', 'payment_transaction_id', 'payment_status', 'status',
     ];
 
     public static function boot()
@@ -33,13 +33,13 @@ class Order extends Model
         return static::create([
             'ticket_id' => $ticket->id,
             'status' => 'pending',
-            'email' => $email
+            'email' => $email,
         ]);
     }
 
     public function complete(): void
     {
-        if (!$this->isPending()) {
+        if (! $this->isPending()) {
             throw new RuntimeException('Only `pending` orders can be completed');
         }
 
@@ -72,7 +72,7 @@ class Order extends Model
     {
         $this->update([
             'payment_transaction_id' => $payment->transactionId(),
-            'payment_status' => $payment->status()
+            'payment_status' => $payment->status(),
         ]);
 
         if ($payment->isCompleted()) {

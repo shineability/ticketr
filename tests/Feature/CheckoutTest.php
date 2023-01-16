@@ -21,13 +21,13 @@ class CheckoutTest extends TestCase
     {
         Ticket::factory()
             ->count(3)
-            ->sequence(fn($sequence) => ['title' => ['Abba', 'The Beatles', 'Moby'][$sequence->index]])
+            ->sequence(fn ($sequence) => ['title' => ['Abba', 'The Beatles', 'Moby'][$sequence->index]])
             ->for(Organizer::factory()->create(['name' => 'Trix']))
             ->create();
 
         Ticket::factory()
             ->count(2)
-            ->sequence(fn($sequence) => ['title' => ['Metallica', 'INXS'][$sequence->index]])
+            ->sequence(fn ($sequence) => ['title' => ['Metallica', 'INXS'][$sequence->index]])
             ->for(Organizer::factory()->create(['name' => 'Sportpaleis']))
             ->create();
 
@@ -101,7 +101,7 @@ class CheckoutTest extends TestCase
             'email' => $email,
             'status' => 'pending',
             'payment_status' => $payment->status(),
-            'payment_transaction_id' => $payment->transactionId()
+            'payment_transaction_id' => $payment->transactionId(),
         ]);
     }
 
@@ -113,7 +113,7 @@ class CheckoutTest extends TestCase
 
         $response
             ->assertRedirect(route('home'))
-            ->assertSessionHas('checkout.order', fn($value) => $order->is($value));
+            ->assertSessionHas('checkout.order', fn ($value) => $order->is($value));
     }
 
     public function test_it_displays_a_message_when_completed()

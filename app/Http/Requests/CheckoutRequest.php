@@ -9,14 +9,14 @@ class CheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email'
+            'email' => 'required|email',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'email.*' => 'Please fill in a valid email address'
+            'email.*' => 'Please fill in a valid email address',
         ];
     }
 

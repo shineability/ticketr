@@ -21,7 +21,7 @@ class TicketFactory extends Factory
             'organizer_id' => Organizer::factory(),
             'title' => $this->faker->bandName(),
             'price' => $this->faker->numberBetween(1, 100),
-            'image' => $this->faker->imageUrl()
+            'image' => $this->faker->imageUrl(),
         ];
     }
 }

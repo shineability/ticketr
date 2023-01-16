@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ticket;
-use App\Models\Order;
-use App\Payment\PaymentProviderFactory;
 use App\Http\Requests\CheckoutRequest;
+use App\Models\Order;
+use App\Models\Ticket;
+use App\Payment\PaymentProviderFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -31,7 +31,7 @@ class CheckoutController extends Controller
     /**
      * Show ticket form.
      *
-     * @param  Ticket $ticket
+     * @param  Ticket  $ticket
      * @return View
      */
     public function showTicketForm(Ticket $ticket): View
@@ -42,8 +42,8 @@ class CheckoutController extends Controller
     /**
      * Redirect to payment provider checkout.
      *
-     * @param  CheckoutRequest $request
-     * @param  Ticket $ticket
+     * @param  CheckoutRequest  $request
+     * @param  Ticket  $ticket
      * @return RedirectResponse
      */
     public function redirectToPaymentProvider(CheckoutRequest $request, Ticket $ticket): RedirectResponse
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
     /**
      * Redirect to homepage and show order status message.
      *
-     * @param  Order $order
+     * @param  Order  $order
      * @return RedirectResponse
      */
     public function redirectOrder(Order $order): RedirectResponse

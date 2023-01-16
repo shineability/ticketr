@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Ramsey\Uuid\Uuid;
 use Money\Money;
+use Ramsey\Uuid\Uuid;
 
 class Ticket extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'organizer_id', 'title', 'price'
+        'organizer_id', 'title', 'price',
     ];
 
     protected $with = ['organizer'];

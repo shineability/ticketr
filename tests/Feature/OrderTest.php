@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Order;
-use App\Models\Ticket;
 use App\Events\OrderCompleted;
 use App\Mail\OrderCompleted as OrderCompletedMail;
+use App\Models\Order;
+use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -51,7 +51,7 @@ class OrderTest extends TestCase
 
         $this->assertDatabaseHas($order, [
             'id' => $order->id,
-            'status' => 'completed'
+            'status' => 'completed',
         ]);
 
         Event::assertDispatched(OrderCompleted::class);
@@ -94,7 +94,7 @@ class OrderTest extends TestCase
 
         $this->assertDatabaseHas($order, [
             'id' => $order->id,
-            'status' => 'canceled'
+            'status' => 'canceled',
         ]);
     }
 
@@ -133,7 +133,7 @@ class OrderTest extends TestCase
             'id' => $order->id,
             'status' => 'pending',
             'payment_transaction_id' => $payment->transactionId(),
-            'payment_status' => $payment->status()
+            'payment_status' => $payment->status(),
         ]);
     }
 
@@ -148,7 +148,7 @@ class OrderTest extends TestCase
             'id' => $order->id,
             'status' => 'completed',
             'payment_transaction_id' => $payment->transactionId(),
-            'payment_status' => $payment->status()
+            'payment_status' => $payment->status(),
         ]);
     }
 
@@ -163,7 +163,7 @@ class OrderTest extends TestCase
             'id' => $order->id,
             'status' => 'canceled',
             'payment_transaction_id' => $payment->transactionId(),
-            'payment_status' => $payment->status()
+            'payment_status' => $payment->status(),
         ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Payment\Contracts\Payment;
 final class FakePayment implements Payment
 {
     private string $status;
+
     private string $transactionId;
 
     private function __construct(string $status, ?string $transactionId = null)

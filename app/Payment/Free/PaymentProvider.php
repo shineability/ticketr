@@ -3,8 +3,8 @@
 namespace App\Payment\Free;
 
 use App\Models\Order;
-use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\Contracts\Payment as PaymentContract;
+use App\Payment\Contracts\PaymentProvider as PaymentProviderContract;
 use App\Payment\PaymentResponse;
 
 final class PaymentProvider implements PaymentProviderContract

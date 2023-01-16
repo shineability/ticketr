@@ -2,16 +2,17 @@
 
 namespace App\Payment;
 
-use App\Models\Organizer;
 use App\Models\Order;
+use App\Models\Organizer;
 use App\Payment\Contracts\PaymentProvider;
+use Closure;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
-use Closure;
 
 final class PaymentProviderFactory
 {
     private Container $container;
+
     private array $providers = [];
 
     public function __construct(Container $container)
@@ -22,8 +23,9 @@ final class PaymentProviderFactory
     /**
      * Create payment provider based on type.
      *
-     * @param  string $provider
+     * @param  string  $provider
      * @return PaymentProvider
+     *
      * @throws InvalidArgumentException
      */
     public function create(string $provider): PaymentProvider
@@ -36,7 +38,7 @@ final class PaymentProviderFactory
     }
 
     /**
-     * @param  Organizer $organizer
+     * @param  Organizer  $organizer
      * @return PaymentProvider
      */
     public function createForOrganizer(Organizer $organizer): PaymentProvider
@@ -45,7 +47,7 @@ final class PaymentProviderFactory
     }
 
     /**
-     * @param  Order $order
+     * @param  Order  $order
      * @return PaymentProvider
      */
     public function createForOrder(Order $order): PaymentProvider

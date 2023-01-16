@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Faker\TicketrProvider;
 use App\Payment\PaymentProviderFacade as PaymentProvider;
 use App\Payment\PaymentProviderFactory;
-use Faker\{Factory, Generator};
-use Illuminate\{Foundation\AliasLoader, Support\ServiceProvider};
+use Faker\Factory;
+use Faker\Generator;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use NumberFormatter;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('money.formatter', function () {
             $currencies = new ISOCurrencies();
             $numberFormatter = new NumberFormatter('nl_BE', NumberFormatter::CURRENCY);
+
             return new IntlMoneyFormatter($numberFormatter, $currencies);
         });
     }
@@ -50,11 +53,13 @@ class AppServiceProvider extends ServiceProvider
         PaymentProvider::extend('mollie', function () {
             $client = new \Mollie\Api\MollieApiClient();
             $client->setApiKey(config('payment.mollie.api_key'));
+
             return new \App\Payment\Mollie\PaymentProvider($client, $this->generateSharedWebhookUrlForMollie());
         });
 
         PaymentProvider::extend('stripe', function () {
             $client = new \Stripe\StripeClient(config('payment.stripe.secret_key'));
+
             return new \App\Payment\Stripe\PaymentProvider($client);
         });
 
@@ -81,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Generator::class, function () {
             $faker = Factory::create();
             $faker->addProvider(new TicketrProvider($faker));
+
             return $faker;
         });
     }

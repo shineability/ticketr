@@ -10,6 +10,7 @@ use App\Payment\PaymentResponse;
 final class FakePaymentProvider implements PaymentProvider
 {
     private Payment $payment;
+
     private string $checkoutUrl;
 
     private function __construct(Payment $payment, string $checkoutUrl)
