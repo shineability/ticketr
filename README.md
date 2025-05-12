@@ -4,7 +4,7 @@ The instructions for the assessment can be found [**here**](ASSESSMENT.md).
 
 ## Requirements
 
-- PHP 8.1 or later
+- PHP 8.2 or later
 - Docker
 
 ## Installation

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Organizer;
 use Illuminate\Database\Seeder;
 
