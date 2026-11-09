@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh:*)",
+      "Bash(pbcopy)",
+      "Bash(./vendor/bin/sail test:*)",
+      "Bash(find:*)",
+      "Bash(./vendor/bin/sail composer:*)",
+      "Bash(curl:*)",
+      "WebSearch",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(git -C \"/Users/shineability/Sites/ticketr\" log --oneline -20)",
+      "WebFetch(domain:packagist.org)",
+      "Bash(./vendor/bin/sail artisan config:clear:*)",
+      "Bash(./vendor/bin/sail artisan:*)",
+      "Bash(git log:*)",
+      "Bash(grep:*)",
+      "Bash(./vendor/bin/sail exec:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "dev-books"
+  ]
+}

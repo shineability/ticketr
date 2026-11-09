@@ -92,12 +92,13 @@ class CheckoutTest extends TestCase
             }
         );
 
-        $response = $this->post(route('checkout.form', $ticket), ['email' => $email]);
+        $response = $this->post(route('checkout.form', $ticket), ['quantity' => 2, 'email' => $email]);
 
         $response->assertRedirect($checkoutUrl);
 
         $this->assertDatabaseHas('orders', [
             'ticket_id' => $ticket->id,
+            'quantity' => 2,
             'email' => $email,
             'status' => 'pending',
             'payment_status' => $payment->status(),

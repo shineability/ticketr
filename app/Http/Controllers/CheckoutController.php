@@ -11,17 +11,15 @@ use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
-    private PaymentProviderFactory $providerFactory;
-
-    public function __construct(PaymentProviderFactory $providerFactory)
-    {
-        $this->providerFactory = $providerFactory;
-    }
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        private PaymentProviderFactory $providerFactory
+    ) {}
 
     /**
      * Show available tickets.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -30,9 +28,6 @@ class CheckoutController extends Controller
 
     /**
      * Show ticket form.
-     *
-     * @param  Ticket  $ticket
-     * @return View
      */
     public function showTicketForm(Ticket $ticket): View
     {
@@ -41,14 +36,10 @@ class CheckoutController extends Controller
 
     /**
      * Redirect to payment provider checkout.
-     *
-     * @param  CheckoutRequest  $request
-     * @param  Ticket  $ticket
-     * @return RedirectResponse
      */
     public function redirectToPaymentProvider(CheckoutRequest $request, Ticket $ticket): RedirectResponse
     {
-        $order = Order::pending($ticket, $request->email);
+        $order = Order::pending($ticket, $request->email, $request->quantity);
         $provider = $this->providerFactory->createForOrganizer($ticket->organizer);
         $response = $provider->checkout($order);
         $order->processPayment($response->payment());
@@ -58,9 +49,6 @@ class CheckoutController extends Controller
 
     /**
      * Redirect to homepage and show order status message.
-     *
-     * @param  Order  $order
-     * @return RedirectResponse
      */
     public function redirectOrder(Order $order): RedirectResponse
     {

@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
+
 return [
 
     /*
@@ -341,9 +344,9 @@ return [
     'serialization_depth' => env('CLOCKWORK_SERIALIZATION_DEPTH', 10),
 
     'serialization_blackbox' => [
-        \Illuminate\Container\Container::class,
-        \Illuminate\Foundation\Application::class,
-        \Laravel\Lumen\Application::class,
+        Container::class,
+        Application::class,
+        Laravel\Lumen\Application::class,
     ],
 
     /*

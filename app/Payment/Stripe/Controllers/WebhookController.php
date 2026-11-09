@@ -9,17 +9,25 @@ use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {
-    private PaymentProviderFactory $providerFactory;
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        private PaymentProviderFactory $providerFactory
+    ) {}
 
-    public function __construct(PaymentProviderFactory $providerFactory)
-    {
-        $this->providerFactory = $providerFactory;
-    }
-
-    public function __invoke(Request $request)
+    /**
+     * Handle the Stripe webhook.
+     */
+    public function __invoke(Request $request): void
     {
         $transactionId = $request->json('data.object.id');
         $order = Order::findByTransactionId($transactionId);
+
+        if ($order === null) {
+            return;
+        }
+
         $provider = $this->providerFactory->createForOrder($order);
         $payment = $provider->getPayment($transactionId);
 
