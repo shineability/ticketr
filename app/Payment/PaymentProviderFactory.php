@@ -11,22 +11,22 @@ use InvalidArgumentException;
 
 final class PaymentProviderFactory
 {
-    private Container $container;
-
+    /**
+     * The registered payment providers.
+     */
     private array $providers = [];
 
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    /**
+     * Create a new payment provider factory.
+     */
+    public function __construct(
+        private Container $container
+    ) {}
 
     /**
      * Create payment provider based on type.
      *
-     * @param  string  $provider
-     * @return PaymentProvider
-     *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException If the payment provider is not registered
      */
     public function create(string $provider): PaymentProvider
     {
@@ -38,8 +38,7 @@ final class PaymentProviderFactory
     }
 
     /**
-     * @param  Organizer  $organizer
-     * @return PaymentProvider
+     * Create a payment provider for an organizer.
      */
     public function createForOrganizer(Organizer $organizer): PaymentProvider
     {
@@ -47,8 +46,7 @@ final class PaymentProviderFactory
     }
 
     /**
-     * @param  Order  $order
-     * @return PaymentProvider
+     * Create a payment provider for an order.
      */
     public function createForOrder(Order $order): PaymentProvider
     {
@@ -57,12 +55,8 @@ final class PaymentProviderFactory
 
     /**
      * Register a custom payment provider.
-     *
-     * @param  string  $provider
-     * @param  Closure  $callback
-     * @return $this
      */
-    public function extend($provider, Closure $callback): self
+    public function extend(string $provider, Closure $callback): self
     {
         $this->providers[$provider] = $callback;
 

@@ -9,6 +9,7 @@ class CheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'quantity' => 'required|integer|min:1|max:10',
             'email' => 'required|email',
         ];
     }

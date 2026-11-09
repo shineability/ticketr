@@ -9,11 +9,17 @@ use App\Payment\PaymentResponse;
 
 final class PaymentProvider implements PaymentProviderContract
 {
+    /**
+     * Get the payment provider name.
+     */
     public function name(): string
     {
         return 'Free';
     }
 
+    /**
+     * Create a checkout for an order.
+     */
     public function checkout(Order $order): PaymentResponse
     {
         $payment = Payment::completed($order);
@@ -22,8 +28,13 @@ final class PaymentProvider implements PaymentProviderContract
         return PaymentResponse::make($payment, $checkoutUrl);
     }
 
+    /**
+     * Get a payment by transaction ID.
+     */
     public function getPayment(string $transactionId): PaymentContract
     {
-        return Payment::completed(Order::findByTransactionId($transactionId));
+        $order = Order::findByTransactionId($transactionId);
+
+        return Payment::completed($order);
     }
 }

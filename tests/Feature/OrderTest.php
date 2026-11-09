@@ -105,6 +105,7 @@ class OrderTest extends TestCase
 
         $order = Order::findByTransactionId($transactionId);
 
+        $this->assertNotNull($order);
         $this->assertEquals($transactionId, $order->payment_transaction_id);
     }
 
@@ -117,9 +118,9 @@ class OrderTest extends TestCase
 
     public function test_it_calculates_the_total()
     {
-        $order = Order::factory()->forTicket(['price' => 4900])->create();
+        $order = Order::factory()->forTicket(['price' => 4900])->create(['quantity' => 3]);
 
-        $this->assertTrue(Money::EUR(4900)->equals($order->total));
+        $this->assertTrue(Money::EUR(14700)->equals($order->total));
     }
 
     public function test_it_can_process_a_payment()
