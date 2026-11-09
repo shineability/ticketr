@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dev-books": {
+      "type": "http",
+      "url": "https://prod-1-data.ke.pinecone.io/mcp/assistants/tech-docs",
+      "headers": {
+        "Authorization": "Bearer ${PINECONE_API_KEY}"
+      }
+    }
+  }
+}

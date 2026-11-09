@@ -12,21 +12,25 @@ use Mollie\Api\Resources\Payment as MollieApiResourcePayment;
 
 final class PaymentProvider implements PaymentProviderContract
 {
-    private MollieApiClient $client;
+    /**
+     * Create a new Mollie payment provider.
+     */
+    public function __construct(
+        private MollieApiClient $client,
+        private string $webhookUrl
+    ) {}
 
-    private string $webhookUrl;
-
-    public function __construct(MollieApiClient $client, string $webhookUrl)
-    {
-        $this->client = $client;
-        $this->webhookUrl = $webhookUrl;
-    }
-
+    /**
+     * Get the payment provider name.
+     */
     public function name(): string
     {
         return 'Mollie';
     }
 
+    /**
+     * Create a checkout for an order.
+     */
     public function checkout(Order $order): PaymentResponse
     {
         $payment = $this->createPayment($order);
@@ -35,11 +39,17 @@ final class PaymentProvider implements PaymentProviderContract
         return PaymentResponse::make(new MolliePayment($payment), $checkoutUrl);
     }
 
+    /**
+     * Get a payment by transaction ID.
+     */
     public function getPayment(string $transactionId): PaymentContract
     {
         return new MolliePayment($this->client->payments->get($transactionId));
     }
 
+    /**
+     * Create a Mollie payment for an order.
+     */
     private function createPayment(Order $order): MollieApiResourcePayment
     {
         return $this->client->payments->create([

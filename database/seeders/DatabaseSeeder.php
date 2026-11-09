@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'Converge',
-                'image' => 'https://www.revolvermag.com/sites/default/files/styles/image_750_x_420/public/media/images/article/converge-by-david-robinson.2-b_w.jpg',
+                'image' => 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
                 'price' => 999,
             ],
             [
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
         $kavka->tickets()->createMany([
             [
                 'title' => 'La Dispute',
-                'image' => 'https://media.altpress.com/uploads/2018/06/LaDisputeFINAL.jpg',
+                'image' => 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800',
                 'price' => 5500,
             ],
             [
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'Meshuggah',
-                'image' => 'https://studiosol-a.akamaihd.net/uploadfile/letras/fotos/e/a/d/c/eadc6d479fd343f8945cf90d8ec7609f.jpg',
+                'image' => 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800',
                 'price' => 3999,
             ],
         ]);

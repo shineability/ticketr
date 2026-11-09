@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
+ * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
@@ -19,6 +20,7 @@ class OrderFactory extends Factory
     {
         return [
             'ticket_id' => Ticket::factory(),
+            'quantity' => 1,
             'email' => $this->faker->safeEmail(),
             'status' => 'pending',
         ];
